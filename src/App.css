@@ -1,24 +1,25 @@
-@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
 
 :root {
-  /* Functional Apex Theme Palette */
-  --bg-dark: #0b0f0d;
-  --bg-card: #121815;
-  --bg-card-hover: #171f1b;
-  --border-subtle: #1e2923;
-  --border-strong: #2e3d34;
+  /* Website Brand Palette */
+  --bg-main: #eae6df;
+  --bg-card: #f4f1eb;
+  --bg-dark-card: #181614;
+  --bg-box-light: #e3dec;
 
-  --text-main: #e2e8e4;
-  --text-muted: #7d8c83;
-  --text-dim: #4e5c54;
+  --border-color: #231f20;
+  --border-subtle: #d0c9be;
 
-  --accent-orange: #f26522;
-  --accent-orange-glow: rgba(242, 101, 34, 0.15);
-  --accent-olive: #6b8e23;
-  --accent-olive-bg: rgba(107, 142, 35, 0.12);
-  --accent-olive-border: #4d6619;
+  --text-main: #231f20;
+  --text-muted: #6b645b;
+  --text-light: #f4f1eb;
 
-  --font-mono: "JetBrains Mono", monospace, ui-monospace;
+  --accent-rust: #c24d2c;
+  --accent-olive: #5b6e58;
+
+  --font-serif: "Instrument Serif", Georgia, serif;
+  --font-sans: "Inter", -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
 }
 
 * {
@@ -28,14 +29,14 @@
 }
 
 body {
-  background-color: var(--bg-dark);
+  background-color: var(--bg-main);
   color: var(--text-main);
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 32px 16px;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -46,61 +47,57 @@ body {
   flex-direction: column;
 }
 
-/* Header Section */
+/* Top Meta Header */
 .header {
   margin-bottom: 24px;
 }
 
 .badge {
   display: inline-block;
-  background: var(--accent-olive-bg);
-  border: 1px solid var(--accent-olive-border);
-  color: #a2c756;
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 700;
-  padding: 4px 8px;
-  letter-spacing: 1px;
+  color: var(--accent-rust);
+  letter-spacing: 1.5px;
   text-transform: uppercase;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
+  font-weight: 500;
 }
 
 h1 {
-  font-size: 24px;
-  font-weight: 800;
-  color: #ffffff;
-  letter-spacing: -0.5px;
-  line-height: 1.2;
-  margin-bottom: 6px;
-  text-transform: uppercase;
+  font-family: var(--font-serif);
+  font-size: 42px;
+  font-weight: 400;
+  color: var(--text-main);
+  line-height: 1.05;
+  margin-bottom: 8px;
 }
 
 .subtitle {
+  font-family: var(--font-sans);
   color: var(--text-muted);
-  font-size: 13px;
-  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.4;
 }
 
 /* Progress Bar */
 .progress-bar {
-  height: 3px;
+  height: 2px;
   background: var(--border-subtle);
   width: 100%;
   margin-bottom: 28px;
-  position: relative;
 }
 
 .progress-fill {
   height: 100%;
-  background: var(--accent-orange);
-  box-shadow: 0 0 8px var(--accent-orange-glow);
+  background: var(--text-main);
   transition: width 0.3s ease;
 }
 
-/* Card 3D Perspective Stage */
+/* Flashcard 3D Stage */
 .card-stage {
-  perspective: 1200px;
+  perspective: 1000px;
   height: 320px;
-  margin-bottom: 28px;
+  margin-bottom: 24px;
 }
 
 .flashcard {
@@ -123,22 +120,19 @@ h1 {
   height: 100%;
   backface-visibility: hidden;
   background: var(--bg-card);
-  border: 1px solid var(--border-strong);
-  padding: 28px;
+  border: 1px solid var(--border-color);
+  padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
 }
 
-.card-face:hover {
-  border-color: var(--text-muted);
-}
-
+/* Dark mode back face matching "The End State" section */
 .card-back {
   transform: rotateY(180deg);
-  border-color: var(--accent-olive-border);
-  background: #0f1411;
+  background: var(--bg-dark-card);
+  color: var(--text-light);
+  border-color: var(--border-color);
 }
 
 .card-header {
@@ -149,46 +143,65 @@ h1 {
   padding-bottom: 12px;
 }
 
+.card-back .card-header {
+  border-bottom-color: #332f2b;
+}
+
 .topic-tag {
+  font-family: var(--font-mono);
   font-size: 11px;
-  font-weight: 700;
-  color: var(--accent-olive);
-  letter-spacing: 0.8px;
+  font-weight: 500;
+  color: var(--accent-rust);
+  letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-.topic-tag.accent {
-  color: var(--accent-orange);
+.card-back .topic-tag {
+  color: #e3dec3;
 }
 
 .card-number {
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-dim);
-  font-weight: 600;
+  color: var(--text-muted);
 }
 
-.prompt,
-.answer {
-  font-size: 15px;
-  line-height: 1.6;
+.card-back .card-number {
+  color: #999083;
+}
+
+.prompt {
+  font-family: var(--font-sans);
+  font-size: 18px;
+  line-height: 1.5;
   color: var(--text-main);
-  font-weight: 400;
+  font-weight: 500;
   margin: auto 0;
 }
 
 .answer {
-  color: #f0f4f1;
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-light);
+  font-weight: 400;
+  margin: auto 0;
 }
 
 .hint {
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-dim);
+  color: var(--text-muted);
   text-align: center;
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
 
-/* Control Buttons */
+.card-back .hint {
+  color: #7a7267;
+}
+
+/* Buttons */
 .controls {
   display: flex;
   gap: 12px;
@@ -197,46 +210,39 @@ h1 {
 
 .btn {
   background: var(--bg-card);
-  border: 1px solid var(--border-strong);
+  border: 1px solid var(--border-color);
   color: var(--text-main);
   padding: 12px 18px;
   cursor: pointer;
-  font-family: var(--font-mono);
+  font-family: var(--font-sans);
   font-weight: 600;
-  font-size: 12px;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
+  font-size: 13px;
   flex: 1;
-  transition: all 0.2s ease;
+  transition: all 0.15s ease;
 }
 
 .btn:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--text-muted);
+  background: #e2ddd3;
 }
 
 .btn-primary {
-  border-color: var(--accent-orange);
-  color: var(--accent-orange);
-  background: var(--accent-orange-glow);
+  background: var(--text-main);
+  color: var(--text-light);
 }
 
 .btn-primary:hover {
-  background: var(--accent-orange);
-  color: #ffffff;
-  border-color: var(--accent-orange);
+  background: var(--accent-rust);
 }
 
-/* Keyboard Hints Footer */
+/* Footer Shortcuts */
 .footer-keys {
   text-align: center;
-  margin-top: 24px;
+  margin-top: 20px;
+  font-family: var(--font-mono);
   font-size: 11px;
-  color: var(--text-dim);
-  letter-spacing: 0.5px;
+  color: var(--text-muted);
 }
 
 .footer-keys strong {
-  color: var(--text-muted);
-  font-weight: 700;
+  color: var(--text-main);
 }
