@@ -105,31 +105,45 @@ h1 {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
   cursor: pointer;
 }
 
 .flashcard.flipped {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
 }
 
 /* Card Faces */
 .card-face {
   position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   padding: 32px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
-/* Dark mode back face matching "The End State" section */
+/* Front Face explicit rotation */
+.card-front {
+  transform: rotateY(0deg);
+  -webkit-transform: rotateY(0deg);
+  z-index: 2;
+}
+
+/* Back Face explicit rotation */
 .card-back {
   transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
   background: var(--bg-dark-card);
   color: var(--text-light);
   border-color: var(--border-color);
