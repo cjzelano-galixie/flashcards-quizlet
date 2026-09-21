@@ -6,41 +6,78 @@ const FLASHCARDS = [
     id: 1,
     topic: "CONFIG / FAIL-FAST",
     question:
-      "Why prefer required() over optional() with default fallbacks for critical env vars?",
+      ".env has DATABASE_URL= and PORT= (both empty). What does the config module do with each?",
     answer:
-      "required() checks for missing or empty values and throws early during boot up, stopping misconfigured environments immediately rather than running with unexpected default states.",
+      'DATABASE_URL throws at startup (required rejects ""). PORT falls back to 3000 (optional uses ||, and "" is falsy).',
   },
   {
     id: 2,
     topic: "ENV PIPELINE",
-    question:
-      "Why doesn't running a migration CLI tool automatically pick up dotenv variables from your Express app?",
+    question: "npm run dev works but migrate:up can't connect. Likely cause?",
     answer:
-      "CLI migration tools execute as separate Node processes. They bypass your Express application entrypoint (src/config/index.js), so dotenv must be loaded via CLI flags or script wrappers.",
+      "dotenv is only loaded inside the config module, which the migration CLI never imports. Fix: dotenv -- (dotenv-cli) in the script.",
   },
   {
     id: 3,
     topic: "DOCKER PERSISTENCE",
     question:
-      "Why don't POSTGRES_* environment variables update an existing database in a Docker volume?",
+      "You change POSTGRES_PASSWORD and restart with down / up -d. Auth fails. Why?",
     answer:
-      "POSTGRES_* variables are entrypoint initialization flags used only when constructing a fresh data directory. Once the volume exists, Postgres boots straight from the existing pgdata folder.",
+      "POSTGRES_* variables only apply when initializing an empty data directory. The pgdata volume kept the old cluster. Fix: ALTER USER (keeps data) or down -v (wipes data).",
   },
   {
     id: 4,
-    topic: "QUERY SAFETY",
+    topic: "DOCKER HEALTH",
     question:
-      "Why can't SQL parameterization ($1, $2) be used for table or column names?",
+      "A container is Up (unhealthy) and restart: unless-stopped is set. Does Docker restart it?",
     answer:
-      "Parameters bind literal values during query execution. Identifiers like table or column names alter the AST/query structure and must be validated or safely constructed before preparation.",
+      "No. Restart policies react to process exit. Health status only reports state.",
   },
   {
     id: 5,
-    topic: "SCRIPT LIFECYCLE",
-    question:
-      "What happens when calling process.exit(1) inside an async catch block before pool release?",
+    topic: "PROCESS LIFECYCLE",
+    question: "process.exit(1) on a pool error is only safe if...?",
     answer:
-      "process.exit(1) abruptly kills the Node event loop, skipping pending cleanup routines or asynchronous finally blocks and leaving open database connection pool sockets.",
+      "Something outside the process (process manager or orchestrator) restarts the app. Otherwise one dropped connection becomes a permanent outage.",
+  },
+  {
+    id: 6,
+    topic: "QUERY SAFETY",
+    question: "Can ORDER BY $1 take a column name as a parameter?",
+    answer:
+      "No. Parameters bind values, not identifiers. It's injection-safe but won't sort by that column. Validate against an allowlist.",
+  },
+  {
+    id: 7,
+    topic: "ARCHITECTURE / LEDGER",
+    question:
+      '"Summing the ledger will be slow." Should you add a balance column?',
+    answer:
+      "Keep the ledger as the source of truth. If needed, add a derived, rebuildable cache that can be reconciled against the ledger. Never a second independent source of truth.",
+  },
+  {
+    id: 8,
+    topic: "MIGRATIONS / IMMUTABILITY",
+    question:
+      "You edit an already-applied migration and teammates' migrate:up does nothing. Why?",
+    answer:
+      "pgmigrations already records it by name, so it's skipped. Applied migrations are immutable; write a new one.",
+  },
+  {
+    id: 9,
+    topic: "GIT / SECRETS",
+    question:
+      "You committed .env, then ran git rm --cached .env. Are you safe?",
+    answer:
+      "No. The secret is still in earlier commits. Rotate the credentials. .gitignore only affects untracked files.",
+  },
+  {
+    id: 10,
+    topic: "POOL LIFECYCLE",
+    question:
+      "What does pool.end() in seed.js do, and what happens without it?",
+    answer:
+      "It closes pooled connections. Without it the script hangs after seeding (open sockets keep Node alive). On the error path, process.exit(1) skips finally.",
   },
 ];
 
